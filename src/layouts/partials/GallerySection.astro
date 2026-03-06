@@ -1,0 +1,104 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import { getListPage } from "@/lib/contentParser.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+
+const sectionData = await getListPage("gallerySection", "gallery-section");
+if (!sectionData.data.enable) return null;
+
+const { title, gallery } = sectionData.data;
+---
+
+<section class="section bg-light overflow-hidden">
+  <div class="container">
+    <h2
+      data-aos="fade-up-sm"
+      data-aos-delay="200"
+      class="text-center mb-10"
+      set:html={markdownify(title)}
+    />
+    <div class="gallery-circle-wrapper">
+      <div class="gallery-circle" data-rotation="0">
+        <figure class="gallery-card gallery-card-1 relative">
+          <ImageMod
+            src={gallery.image_1.source}
+            alt={gallery.image_1.caption || "Gallery Image 1"}
+            class="w-full h-full object-cover"
+            width={520}
+            height={640}
+          />
+          <figcaption
+            class="bg-body py-2 px-4 text-text-dark absolute bottom-6 left-6 uppercase"
+            set:html={markdownify(gallery.image_1.caption)}
+          />
+        </figure>
+
+        <figure class="gallery-card gallery-card-2 relative">
+          <ImageMod
+            src={gallery.image_2.source}
+            alt={gallery.image_2.caption || "Gallery Image 2"}
+            class="w-full h-full object-cover"
+            width={520}
+            height={640}
+          />
+          <figcaption
+            class="bg-body py-2 px-4 text-text-dark absolute bottom-6 left-6 uppercase"
+            set:html={markdownify(gallery.image_2.caption)}
+          />
+        </figure>
+        <figure class="gallery-card gallery-card-3 relative">
+          <ImageMod
+            src={gallery.image_3.source}
+            alt={gallery.image_3.caption || "Gallery Image 3"}
+            class="w-full h-full object-cover"
+            width={520}
+            height={640}
+          />
+          <figcaption
+            class="bg-body py-2 px-4 text-text-dark absolute bottom-6 left-6 uppercase"
+            set:html={markdownify(gallery.image_3.caption)}
+          />
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const initGalleryCircle = () => {
+    const circle = document.querySelector(".gallery-circle") as HTMLElement;
+    if (!circle) return;
+    let lastY = window.scrollY;
+    let targetRotation = 0;
+    let currentRotation = 0;
+    let animating = false;
+
+    const animate = () => {
+      currentRotation += (targetRotation - currentRotation) * 0.12;
+      circle.style.setProperty("--rotation", currentRotation + "deg");
+      if (Math.abs(targetRotation - currentRotation) > 0.05) {
+        requestAnimationFrame(animate);
+      } else {
+        currentRotation = targetRotation;
+        circle.style.setProperty("--rotation", currentRotation + "deg");
+        animating = false;
+      }
+    };
+
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      const delta = currentY - lastY;
+      const direction = Math.sign(delta);
+      const step = Math.min(Math.abs(delta), 80) * 0.08;
+      targetRotation += direction * step;
+      lastY = currentY;
+      if (!animating) {
+        animating = true;
+        requestAnimationFrame(animate);
+      }
+    };
+
+    document.addEventListener("scroll", onScroll, { passive: true });
+  };
+  document.addEventListener("astro:page-load", initGalleryCircle);
+</script>

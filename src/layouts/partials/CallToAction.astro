@@ -1,0 +1,37 @@
+---
+import Button from "@/components/Button.astro";
+import ImageMod from "@/components/ImageMod.astro";
+import { getListPage } from "@/lib/contentParser.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+
+const sectionData = await getListPage("callToAction", "call-to-action");
+if (!sectionData.data.enable) return null;
+
+const { title, image, button } = sectionData.data;
+---
+
+<section class="h-[600px] lg:h-[800px] relative">
+  <ImageMod
+    class="absolute inset-0 w-full h-full object-cover z-10"
+    src={image}
+    width={1900}
+    height={800}
+    alt="cta-image"
+    format="webp"
+  />
+
+  <div class="absolute inset-0 bg-linear-to-r from-black/60 to-black/20 z-20">
+    <div class="absolute bottom-16 left-6 md:left-16 xl:w-[40%]">
+      <h2
+        data-aos="fade-up-sm"
+        data-aos-delay="200"
+        set:html={markdownify(title)}
+        class="h1 text-text-light leading-none mb-4 text-balance"
+      />
+
+      <div data-aos="fade-up-sm" data-aos-delay="200">
+        <Button data={button} />
+      </div>
+    </div>
+  </div>
+</section>

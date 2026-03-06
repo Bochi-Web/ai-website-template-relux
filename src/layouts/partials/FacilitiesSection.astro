@@ -1,0 +1,46 @@
+---
+import DynamicIcon from "@/helpers/DynamicIcon";
+import { getListPage } from "@/lib/contentParser.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+
+const pageIndex = await getListPage("homepage", "-index");
+if (!pageIndex.data.facilities_section.enable) return null;
+
+const { title, description, facilities } = pageIndex.data.facilities_section;
+---
+
+<section class="section pt-0 bg-light">
+  <div class="container">
+    <h2
+      data-aos="fade-up-sm"
+      data-aos-delay="200"
+      class="text-center mb-12 xl:w-[20%] mx-auto"
+      set:html={markdownify(title)}
+    />
+
+    <div
+      class="grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-center"
+    >
+      {
+        facilities?.map((facility, i) => (
+          <div
+            data-aos="fade-up-sm"
+            data-aos-delay={`${i * 100}`}
+            class="bg-body p-7 text-center"
+          >
+            <DynamicIcon
+              icon={facility.icon}
+              className="w-12 h-12 text-primary mx-auto"
+            />
+            <h3
+              class="h5 mt-10 mb-3 opacity-80"
+              set:html={markdownify(facility.label)}
+            />
+
+            <p class="uppercase" set:html={markdownify(description)} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,87 @@
+{
+  "main": [
+    {
+      "name": "Rooms",
+      "url": "/rooms"
+    },
+    {
+      "name": "About",
+      "url": "/about"
+    },
+    {
+      "name": "Pages #",
+      "url": "",
+      "hasChildren": true,
+      "children": [
+        {
+          "name": "Rooms",
+          "url": "/rooms"
+        },
+        {
+          "name": "Rooms Details",
+          "url": "/rooms/deluxe-suite"
+        },
+        {
+          "name": "Cafe & Juice",
+          "url": "/cafe-juice"
+        },
+        {
+          "name": "Blog",
+          "url": "/blog"
+        },
+        {
+          "name": "Blog Details",
+          "url": "/blog/guest-stories-testimonials-unique-experiences-memories"
+        },
+        {
+          "name": "404 Page",
+          "url": "/404"
+        }
+      ]
+    },
+    {
+      "name": "Cafe & Juice",
+      "url": "/cafe-juice"
+    },
+    {
+      "name": "Blog",
+      "url": "/blog"
+    }
+  ],
+  "footer": [
+    {
+      "title": "Star Bene",
+      "children": [
+        {
+          "name": "Relux San Felice Resort",
+          "url": "/rooms/the-view-suite"
+        },
+        {
+          "name": "Food & Juice Experience",
+          "url": "/rooms/deluxe-suite"
+        },
+        {
+          "name": "See oscine hotel",
+          "url": "/rooms/dine-and-stay"
+        }
+      ]
+    },
+    {
+      "title": "Info",
+      "children": [
+        {
+          "name": "privacy policy",
+          "url": "/privacy-policy"
+        },
+        {
+          "name": "Elements",
+          "url": "/elements"
+        },
+        {
+          "name": "Blog & Events",
+          "url": "/blog"
+        }
+      ]
+    }
+  ]
+}

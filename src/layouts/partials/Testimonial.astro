@@ -1,0 +1,146 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import StarRating from "@/components/StarRating.astro";
+import { getListPage } from "@/lib/contentParser.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import { Swiper, SwiperSlide, SwiperWrapper } from "astro-swiper";
+import type { SwiperOptions } from "swiper/types";
+
+const sectionData = await getListPage("testimonialSection", "testimonial");
+if (!sectionData.data.enable) return null;
+
+const { title, testimonials } = sectionData.data;
+
+const swiperOptions: SwiperOptions = {
+  spaceBetween: 24,
+  loop: false,
+  centeredSlides: false,
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+  },
+  navigation: {
+    nextEl: ".room-swiper-button-next",
+    prevEl: ".room-swiper-button-prev",
+  },
+  breakpoints: {
+    768: {
+      slidesPerView: 2,
+    },
+  },
+};
+---
+
+<section class="section pt-0 bg-light">
+  <div class="container">
+    <h2
+      data-aos="fade-up-sm"
+      data-aos-delay="200"
+      class="text-left mb-22 md:mb-12 2xl:w-[20%]"
+      set:html={markdownify(title)}
+    />
+
+    <div class="relative">
+      <!-- Custom arrow buttons -->
+      <div class="absolute right-6 -top-16 z-10 flex items-center gap-2.5">
+        <button
+          type="button"
+          class="room-swiper-button-prev bg-primary hover:text-body duration-500 ease-in-out cursor-pointer w-fit p-4 rounded-full border border-border transition-transform active:scale-95"
+          data-aos="fade-right-sm"
+        >
+          <svg
+            class="w-5"
+            width="14"
+            height="24"
+            viewBox="0 0 14 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12.8281 0C12.8281 7.85455 4.94241 11.2727 0.999554 12C4.94241 12.7273 12.8281 16.1455 12.8281 24"
+              stroke="var(--color-secondary)"
+              stroke-width="2"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+        <button
+          type="button"
+          class="room-swiper-button-next bg-primary hover:text-body duration-500 ease-in-out cursor-pointer w-fit p-4 rounded-full border border-border transition-transform active:scale-95"
+          data-aos="fade-left-sm"
+        >
+          <svg
+            class="w-5"
+            width="14"
+            height="24"
+            viewBox="0 0 14 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 24C1 16.1455 8.88571 12.7273 12.8286 12C8.88571 11.2727 1 7.85455 1 0"
+              stroke="var(--color-secondary)"
+              stroke-width="2"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+      </div>
+
+      <Swiper
+        data-aos="fade-up-sm"
+        data-aos-delay="200"
+        options={swiperOptions}
+        class="room-slider testimonial-slider border border-primary overflow-visible"
+      >
+        <SwiperWrapper class={"p-6 overflow-visible"}>
+          {
+            testimonials?.map((t, index) => (
+              <SwiperSlide class={"relative overflow-visible"}>
+                <div class="flex">
+                  <div class="relative">
+                    <ImageMod
+                      src={t.slide_image}
+                      alt={`slider image ${index + 1}`}
+                      class="testimonial-image w-full h-[600px] lg:h-[800px] object-cover"
+                      width={1500}
+                      height={800}
+                    />
+                    <div class="testimonial-overlay">
+                      <svg
+                        class="mx-auto mb-10 text-text-dark"
+                        width="49"
+                        height="38"
+                        viewBox="0 0 49 38"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9.3 3.9C3.4 11.3 0.8 18.5 0.4 28.8L0 38H8.9H17.9L18.5 27.1C18.9 19.8 19.8 14.4 21.2 10.8C22.3 7.9 23.2 5.4 23.2 5.3C23.2 5 13.4 0 12.8 0C12.6 0 11 1.8 9.3 3.9Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M34.5002 3.9C28.6002 11.3 26.0002 18.5 25.6002 28.8L25.2002 38H34.1002H43.1002L43.7002 27.1C44.1002 19.8 45.0002 14.4 46.4002 10.8C47.5002 7.9 48.4002 5.4 48.4002 5.3C48.4002 5 38.6002 0 38.0002 0C37.8002 0 36.2002 1.8 34.5002 3.9Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+
+                      <blockquote
+                        class="lg:h6 mb-2 text-text-dark"
+                        set:html={markdownify(t.content)}
+                      />
+
+                      <StarRating rating={t.rating} size="w-3 h-3" />
+                      <h5
+                        class="text-text-dark mt-12"
+                        set:html={markdownify(t.name)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))
+          }
+        </SwiperWrapper>
+      </Swiper>
+    </div>
+  </div>
+</section>

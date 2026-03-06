@@ -1,0 +1,399 @@
+---
+import Button from "@/components/Button.astro";
+import ImageMod from "@/components/ImageMod.astro";
+import Logo from "@/components/Logo.astro";
+import config from "@/config/config.json";
+import menu from "@/config/menu.json";
+
+export interface ChildNavigationLink {
+  name: string;
+  url: string;
+}
+
+export interface NavigationLink {
+  name: string;
+  url: string;
+  hasChildren?: boolean;
+  children?: ChildNavigationLink[];
+}
+
+const { main }: { main: NavigationLink[] } = menu;
+const { navigation_button } = config;
+const { pathname } = Astro.url;
+const { isNotFound = false } = Astro.props;
+const stickyHeader = config.settings.sticky_header;
+const topLevelLinks = main.filter(({ hasChildren }) => !hasChildren);
+const leftTopLinks = topLevelLinks.slice(0, 2);
+const rightTopLinks = topLevelLinks.slice(2, 4);
+
+const isActiveLink = (url: string) =>
+  pathname === url || pathname === `${url}/`;
+---
+
+<!-- navbar toggler -->
+<input id="nav-toggle" type="checkbox" class="hidden" />
+
+<header
+  data-aos="fade-down-sm"
+  data-aos-delay="100"
+  class={`header z-70 w-full ${stickyHeader ? "sticky-enabled" : ""}`}
+>
+  <nav class="navbar container lg:px-30">
+    <!-- hamburger menu -->
+    <label
+      for="nav-toggle"
+      class={`cursor-pointer flex items-center gap-2 ${
+        isNotFound ? "text-text" : "text-text-light"
+      } order-0 z-[60] relative`}
+    >
+      <div
+        class="hamburger-icon w-6 h-6 flex flex-col justify-center gap-[5px]"
+      >
+        <span
+          class="hamburger-bar bar-top block h-[2px] bg-current transition-all duration-300 ease-in-out origin-center"
+        ></span>
+        <span
+          class="hamburger-bar bar-middle block h-[2px] bg-current transition-all duration-300 ease-in-out"
+        ></span>
+        <span
+          class="hamburger-bar bar-bottom block h-[2px] bg-current transition-all duration-300 ease-in-out origin-center"
+        ></span>
+      </div>
+      <span class={`menu-text text-xs`}>MENU</span>
+      <span class="close-text text-xs hidden text-text">CLOSE</span>
+    </label>
+
+    <!-- desktop centered nav with logo -->
+    <div
+      class="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2 z-20"
+    >
+      <ul class="flex items-center gap-6 mr-10">
+        {
+          leftTopLinks.map((item) => (
+            <li>
+              <a
+                href={item.url}
+                class={`text-xs uppercase transition hover:text-primary ${
+                  isActiveLink(item.url)
+                    ? "text-primary"
+                    : isNotFound
+                      ? "text-text"
+                      : "text-text-light"
+                }`}
+              >
+                {item.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <Logo />
+
+      <ul class="flex items-center gap-6 ml-10">
+        {
+          rightTopLinks.map((item) => (
+            <li>
+              <a
+                href={item.url}
+                class={`text-xs uppercase transition hover:text-primary ${
+                  isActiveLink(item.url)
+                    ? "text-primary"
+                    : isNotFound
+                      ? "text-text"
+                      : "text-text-light"
+                }`}
+              >
+                {item.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <!-- logo centered on mobile -->
+    <div class="order-1 absolute left-1/2 transform -translate-x-1/2 lg:hidden">
+      <Logo />
+    </div>
+
+    {
+      navigation_button.enable && (
+        <Button
+          data={{
+            enable: true,
+            label: navigation_button.label,
+            link: navigation_button.link,
+          }}
+          className="max-md:hidden btn-sm lg:inline-block"
+        />
+      )
+    }
+
+    <!-- full screen menu -->
+    <div
+      id="nav-menu"
+      class="nav-menu-fullscreen fixed top-0 left-0 right-0 w-full h-screen bg-body pt-24 px-6 flex flex-col items-center justify-start overflow-y-auto z-40"
+    >
+      <div class="flex flex-col lg:flex-row justify-between gap-10">
+        <ul>
+          {
+            main.map((menu, i) => {
+              let itemCount = i + 1;
+              return (
+                <>
+                  {menu.hasChildren ? (
+                    <li class="nav-item nav-dropdown w-full border-b border-border/30 py-4 max-w-[1400px]">
+                      <input
+                        type="checkbox"
+                        id={`submenu-${menu.name}`}
+                        class="peer hidden"
+                      />
+                      <label
+                        for={`submenu-${menu.name}`}
+                        class={`nav-link-fullscreen inline-flex items-center justify-between w-full cursor-pointer ${
+                          menu.children
+                            ?.map(({ url }) => url)
+                            .includes(pathname) ||
+                          menu.children
+                            ?.map(({ url }) => `${url}/`)
+                            .includes(pathname)
+                            ? "active"
+                            : ""
+                        }`}
+                      >
+                        <span>
+                          <span class="mr-2 text-sm">
+                            {String(itemCount).padStart(2, "0")}
+                          </span>
+                          {menu.name}
+                        </span>
+                        <svg
+                          class="h-4 w-4 fill-current transition-transform duration-300 peer-checked:rotate-180"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                        </svg>
+                      </label>
+                      <ul class="nav-dropdown-fullscreen hidden peer-checked:flex flex-col gap-3 mt-3 pl-4 space-y-2">
+                        {menu.children?.map((child) => (
+                          <li class="nav-dropdown-item">
+                            <a
+                              href={child.url}
+                              aria-label={child.name}
+                              class={`nav-dropdown-link-fullscreen lg:pl-6 ${
+                                (pathname === `${child.url}/` ||
+                                  pathname === child.url) &&
+                                "active"
+                              }`}
+                            >
+                              {child.name}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  ) : (
+                    <li class="nav-item w-full border-b border-border/30 py-4 max-w-[1400px]">
+                      <a
+                        href={menu.url}
+                        class={`nav-link-fullscreen block ${
+                          (pathname === `${menu.url}/` ||
+                            pathname === menu.url) &&
+                          "active"
+                        }`}
+                      >
+                        <span class="mr-2 text-sm">
+                          {String(itemCount).padStart(2, "0")}
+                        </span>
+                        {menu.name}
+                      </a>
+                    </li>
+                  )}
+                </>
+              );
+            })
+          }
+          {
+            navigation_button.enable && (
+              <li class="mt-6 w-full max-w-[1400px]">
+                <Button
+                  data={{
+                    enable: true,
+                    label: "Book Here",
+                    link: "/",
+                  }}
+                  className="text-base"
+                />
+              </li>
+            )
+          }
+        </ul>
+
+        <div>
+          <ImageMod
+            src="/images/homepage/menu.png"
+            alt="Menu Illustration"
+            width={632}
+            height={632}
+            class="lg:ml-10 xl:ml-20 mt-10 max-w-[300px] md:max-w-[632px]"
+          />
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  import config from "@/config/config.json";
+  const STICKY_ENABLED = config.settings.sticky_header;
+  document.addEventListener("astro:page-load", () => {
+    const navToggle = document.getElementById("nav-toggle") as HTMLInputElement;
+    const navMenu = document.getElementById("nav-menu") as HTMLElement;
+    const headerEl = document.querySelector(
+      "header.header",
+    ) as HTMLElement | null;
+    const barTop = document.querySelector(".bar-top") as HTMLElement;
+    const barMiddle = document.querySelector(".bar-middle") as HTMLElement;
+    const barBottom = document.querySelector(".bar-bottom") as HTMLElement;
+    const menuText = document.querySelector(".menu-text") as HTMLElement;
+    const closeText = document.querySelector(".close-text") as HTMLElement;
+    let lockedScrollY = 0;
+
+    if (!navToggle || !navMenu) return;
+
+    // Keep fixed overlay outside transformed header context
+    if (navMenu.parentElement !== document.body) {
+      document.body.appendChild(navMenu);
+    }
+
+    // Sticky header handling
+    if (STICKY_ENABLED) {
+      const threshold = 100; // px scrolled before header becomes sticky
+      const onScroll = () => {
+        if (!headerEl) return;
+        if (window.scrollY > threshold) headerEl.classList.add("is-sticky");
+        else headerEl.classList.remove("is-sticky");
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    }
+
+    // Set initial state for nav menu
+    navMenu.style.display = "none";
+    navMenu.style.pointerEvents = "none";
+    navMenu.style.opacity = "0";
+    navMenu.style.overflow = "auto";
+    navMenu.style.overflowY = "auto";
+    navMenu.style.height = "100dvh";
+    navMenu.style.overscrollBehavior = "contain";
+    navMenu.style.touchAction = "pan-y";
+    navMenu.style.setProperty("-webkit-overflow-scrolling", "touch");
+
+    const openMenu = () => {
+      if (headerEl) headerEl.classList.add("menu-open");
+      navMenu.style.display = "flex";
+      navMenu.style.pointerEvents = "auto";
+      navMenu.style.opacity = "1";
+
+      // Animate hamburger to close icon (cross with middle and bottom bars)
+      if (barTop) {
+        barTop.style.opacity = "0";
+        barTop.style.transform = "translateX(-10px)";
+        barTop.style.transform = "scale(0)";
+      }
+      if (barMiddle) {
+        barMiddle.style.transform = "rotate(45deg)";
+        barMiddle.style.width = "100%";
+        barMiddle.style.color = "var(--color-text)";
+      }
+      if (barBottom) {
+        barBottom.style.transform =
+          "rotate(-45deg) translateY(-5px) translateX(4px)";
+        barBottom.style.width = "100%";
+        barBottom.style.color = "var(--color-text)";
+      }
+
+      // Toggle text
+      if (menuText) menuText.style.display = "none";
+      if (closeText) closeText.style.display = "block";
+
+      lockedScrollY = window.scrollY;
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${lockedScrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+    };
+
+    const closeMenu = () => {
+      if (headerEl) headerEl.classList.remove("menu-open");
+      navMenu.style.display = "none";
+      navMenu.style.pointerEvents = "none";
+      navMenu.style.opacity = "0";
+
+      // Animate close icon back to hamburger
+      if (barTop) {
+        barTop.style.opacity = "1";
+        barTop.style.transform = "translateX(0)";
+        barTop.style.width = "60%";
+        barTop.style.color = "";
+      }
+      if (barMiddle) {
+        barMiddle.style.transform = "rotate(0)";
+        barMiddle.style.width = "100%";
+        barMiddle.style.color = "";
+      }
+      if (barBottom) {
+        barBottom.style.transform = "rotate(0)";
+        barBottom.style.width = "80%";
+        barBottom.style.color = "";
+      }
+
+      // Toggle text
+      if (menuText) menuText.style.display = "block";
+      if (closeText) closeText.style.display = "none";
+
+      document.documentElement.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      window.scrollTo(0, lockedScrollY);
+    };
+
+    // Set initial bar widths
+    if (barTop) barTop.style.width = "60%";
+    if (barMiddle) barMiddle.style.width = "100%";
+    if (barBottom) barBottom.style.width = "80%";
+
+    navToggle.addEventListener("change", (e) => {
+      if ((e.target as HTMLInputElement).checked) {
+        openMenu();
+      } else {
+        closeMenu();
+      }
+    });
+
+    navMenu.addEventListener(
+      "wheel",
+      (event) => {
+        if (!navToggle.checked) return;
+        event.preventDefault();
+        navMenu.scrollTop += event.deltaY;
+      },
+      { passive: false },
+    );
+
+    // Close menu when clicking on menu items
+    const menuLinks = navMenu.querySelectorAll("a");
+    menuLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        navToggle.checked = false;
+        closeMenu();
+      });
+    });
+  });
+</script>

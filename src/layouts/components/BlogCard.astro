@@ -1,0 +1,57 @@
+---
+import dateFormat from "@/lib/utils/dateFormat";
+import { markdownify } from "@/lib/utils/textConverter";
+import type { CollectionEntry } from "astro:content";
+import Button from "./Button.astro";
+import ImageMod from "./ImageMod.astro";
+
+type Props = {
+  data: CollectionEntry<"blogSinglePage">;
+};
+
+const { data } = Astro.props;
+const { title, image, categories, date } = data.data;
+---
+
+<article class="border border-primary p-6 bg-body group relative">
+  <figure class="overflow-hidden relative">
+    {
+      image && (
+        <ImageMod
+          src={image}
+          width={804}
+          height={480}
+          alt={"Image of - " + title}
+          format="webp"
+          class="w-full h-80 lg:h-120 object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      )
+    }
+
+    {
+      categories && categories.length > 0 && (
+        <ul class="flex flex-wrap gap-2 absolute bottom-4 left-4">
+          {categories.map((category) => (
+            <li class="px-4 py-1 bg-body text-text-dark border border-primary uppercase">
+              {category}
+            </li>
+          ))}
+          <li class="px-4 py-1 bg-body text-text-dark border border-primary uppercase">
+            {dateFormat(date)}
+          </li>
+        </ul>
+      )
+    }
+  </figure>
+
+  <a href={`/blog/${data.id}`} class="after:absolute after:inset-0">
+    <h2
+      class="h4 text-balance my-6 wrap-break-word"
+      set:html={markdownify(title)}
+    />
+  </a>
+
+  <Button
+    data={{ enable: true, label: "read more", link: `/blog/${data.id}` }}
+  />
+</article>

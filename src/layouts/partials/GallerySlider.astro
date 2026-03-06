@@ -1,0 +1,114 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import { getListPage } from "@/lib/contentParser.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import { Swiper, SwiperSlide, SwiperWrapper } from "astro-swiper";
+import type { SwiperOptions } from "swiper/types";
+
+const sectionData = await getListPage("gallerySlider", "gallery-slider");
+if (!sectionData.data.enable) return null;
+
+const { title, images, button } = sectionData.data;
+
+const swiperOptions: SwiperOptions = {
+  spaceBetween: 24,
+  loop: true,
+  centeredSlides: false,
+  speed: 10000,
+  autoplay: {
+    delay: 0,
+    disableOnInteraction: true,
+  },
+  breakpoints: {
+    0: {
+      slidesPerView: 2,
+    },
+    768: {
+      slidesPerView: 3,
+    },
+    992: {
+      slidesPerView: 4,
+    },
+    1300: {
+      slidesPerView: 5,
+    },
+    2000: {
+      slidesPerView: 6,
+    },
+  },
+};
+---
+
+<section class="py-4 bg-light">
+  <div class="container">
+    {/* section title   */}
+    <div class="flex flex-wrap justify-center md:justify-between gap-4">
+      <h6 class="font-primary" set:html={markdownify(title)} />
+      {
+        button.enable && (
+          <a
+            href={button.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="h6 text-text-dark hover:text-primary transition-colors duration-300"
+          >
+            {button.label}
+          </a>
+        )
+      }
+    </div>
+  </div>
+
+  <Swiper class="gallery-slider mt-6" options={swiperOptions}>
+    <SwiperWrapper>
+      {
+        images?.map((img, i) => (
+          <SwiperSlide>
+            <a
+              href={button.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group relative block"
+            >
+              <ImageMod
+                height={430}
+                width={500}
+                src={img}
+                alt={`gallery-slider-${i}`}
+                class="h-[430px] w-auto object-cover"
+                format="webp"
+              />
+              <span class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <svg
+                  class="h-8 w-8 text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M7 3h10a4 4 0 014 4v10a4 4 0 01-4 4H7a4 4 0 01-4-4V7a4 4 0 014-4Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M12 8.5A3.5 3.5 0 1112 15.5a3.5 3.5 0 010-7Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
+                </svg>
+              </span>
+            </a>
+          </SwiperSlide>
+        ))
+      }
+    </SwiperWrapper>
+  </Swiper>
+</section>
+
+<style>
+  .swiper-wrapper {
+    transition-timing-function: linear !important;
+  }
+</style>

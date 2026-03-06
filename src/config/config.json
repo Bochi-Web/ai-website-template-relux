@@ -1,0 +1,52 @@
+{
+  "site": {
+    "title": "Relux - Luxury Hotels Astro Template",
+    "base_url": "https://relux-astro.vercel.app",
+    "base_path": "/",
+    "trailing_slash": false,
+    "favicon": "/images/favicon.png",
+    "logo": "/images/logo.svg",
+    "logo_width": "123",
+    "logo_height": "24",
+    "logo_text": "Relux"
+  },
+
+  "settings": {
+    "sticky_header": false,
+    "pagination": 6
+  },
+
+  "contact_info": {
+    "phone": "(00) 123 456 7789",
+    "email": "hello@yourmail.com",
+    "address": "Relux HQ, 234 New York"
+  },
+
+  "params": {
+    "contact_form_action": "#",
+    "copyright": "© 2026 Relux hotel"
+  },
+
+  "navigation_button": {
+    "enable": true,
+    "label": "Book Here",
+    "link": "/contact"
+  },
+
+  "subscription_in_footer": {
+    "enable": true,
+    "mailchimp_form_action": "https://gmail.us4.list-manage.com/subscribe/post?u=463ee871f45d2d93748e77cad&amp;id=a0a2c6d074",
+    "mailchimp_form_name": "b_463ee871f45d2d93748e77cad_a0a2c6d074"
+  },
+
+  "google_tag_manager": {
+    "enable": false,
+    "gtm_id": "GTM-XXXXXX"
+  },
+
+  "metadata": {
+    "meta_author": "Themefisher",
+    "meta_image": "/images/og-image.png",
+    "meta_description": "A modern and elegant Astro web template for luxury hotels, resorts, and boutique stays. Showcase rooms, amenities, and experiences with stunning visuals, smooth booking, and a five-star design built to impress and convert visitors effortlessly."
+  }
+}

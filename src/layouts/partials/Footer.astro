@@ -1,0 +1,97 @@
+---
+import Social from "@/components/Social.astro";
+import config from "@/config/config.json";
+import menu from "@/config/menu.json";
+import social from "@/config/social.json";
+import { markdownify } from "@/lib/utils/textConverter";
+
+const { footer } = menu;
+---
+
+<footer class="section pb-8 bg-secondary">
+  <div class="container">
+    <div
+      class="flex max-md:flex-col max-md:items-center justify-between gap-6 md:divide-x divide-border/30"
+    >
+      <div class="lg:w-[35%] max-md:text-center">
+        <h4
+          data-aos="fade-up-sm"
+          data-aos-delay="150"
+          class="uppercase gradient-text mb-6"
+          set:html={markdownify("A Stay Beyond Compare")}
+        />
+
+        <a
+          data-aos="fade-up-sm"
+          data-aos-delay="150"
+          class="btn btn-primary max-w-fit block max-md:mx-auto"
+          href="/">BOOK HERE</a
+        >
+        <Social
+          source={social.main}
+          className="social-icons mt-8 md:mt-40 max-md:mb-10"
+        />
+      </div>
+
+      <div class="lg:w-[50%]">
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {
+            footer.map((menu) => (
+              <div data-aos="fade-up-sm" data-aos-delay="150">
+                <p class="h5 mb-3 font-medium gradient-text! uppercase font-secondary">
+                  {menu.title}
+                </p>
+                <ul>
+                  {menu.children.map((child) => (
+                    <li class="uppercase mb-2 last:mb-0 text-text-light/80 text-base-sm hover:text-primary transition-all duration-300 ease-in-out">
+                      <a
+                        href={child.url}
+                        target={`${menu.title === "Social" ? "_blank" : "_self"}`}
+                      >
+                        {child.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+          <div class="pr-0" data-aos="fade-up-sm" data-aos-delay="150">
+            <p
+              class="h5 mb-3 font-medium gradient-text uppercase font-secondary"
+            >
+              Contact
+            </p>
+            <ul>
+              <li
+                class="uppercase mb-2 last:mb-0 text-text-light/80 text-base-sm"
+              >
+                {config.contact_info.address}
+              </li>
+              <li
+                class="uppercase mb-2 last:mb-0 text-text-light/80 text-base-sm hover:text-primary transition-all duration-300 ease-in-out"
+              >
+                <a
+                  href={`tel:${config.contact_info.phone.replace(/\s|\(|\)/g, "")}`}
+                >
+                  {config.contact_info.phone}
+                </a>
+              </li>
+              <li
+                class="uppercase mb-2 last:mb-0 text-text-light/80 text-base-sm hover:text-primary transition-all duration-300 ease-in-out"
+              >
+                <a href={`mailto:${config.contact_info.email}`}>
+                  {config.contact_info.email}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="mt-34 text-text-light text-xs uppercase max-md:text-center">
+          {config.params.copyright}
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

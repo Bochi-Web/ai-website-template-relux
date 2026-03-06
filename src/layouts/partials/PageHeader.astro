@@ -1,0 +1,174 @@
+---
+import dateFormat from "@/lib/utils/dateFormat";
+import { markdownify } from "@/lib/utils/textConverter";
+import { IoMdPersonAdd } from "react-icons/io";
+import { IoBedOutline } from "react-icons/io5";
+import { PiBathtub } from "react-icons/pi";
+import { SlSizeFullscreen } from "react-icons/sl";
+
+const {
+  title,
+  subtitle,
+  backgroundImage,
+  blogTitle,
+  categories,
+  date,
+  roomTitle,
+  price,
+  roomDetails,
+} = Astro.props;
+
+const bannerStyle = backgroundImage
+  ? `--banner-image: url("${backgroundImage}");`
+  : undefined;
+---
+
+<section
+  class="hero-banner pt-24 lg:min-h-screen! flex flex-col gap-8"
+  style={bannerStyle}
+>
+  {
+    subtitle && (
+      <p
+        data-aos="fade-up-sm"
+        data-aos-delay="150"
+        set:html={markdownify(subtitle)}
+        class="gradient-text lg:text-h1 text-text-light text-center uppercase font-secondary font-normal"
+      />
+    )
+  }
+
+  {
+    (
+      <div class="mt-auto overflow-hidden">
+        {categories && categories.length > 0 && (
+          <ul class="flex flex-wrap gap-2 mb-2 justify-center">
+            {categories.map((category: string, i: number) => (
+              <li
+                data-aos="fade-up-sm"
+                data-aos-delay={i * 150}
+                class="px-4 py-1 bg-body text-text-dark border border-primary uppercase"
+              >
+                {category}
+              </li>
+            ))}
+
+            {date && (
+              <li
+                data-aos="fade-up-sm"
+                data-aos-delay="200"
+                class="px-4 py-1 bg-body text-text-dark border border-primary uppercase"
+              >
+                {dateFormat(date)}
+              </li>
+            )}
+          </ul>
+        )}
+
+        {blogTitle && (
+          <h1
+            data-aos="fade-up-sm"
+            data-aos-delay="200"
+            set:html={markdownify(blogTitle)}
+            class="max-md:order-1 lg:max-w-[1050px] mx-auto pb-10 lg:pb-12 text-text-light max-lg:text-center font-primary font-medium text-center self-end capitalize wrap-break-word"
+          />
+        )}
+      </div>
+    )
+  }
+
+  <div class="container">
+    {
+      roomTitle && (
+        <h1
+          data-aos="fade-up-sm"
+          data-aos-delay="200"
+          set:html={markdownify(roomTitle)}
+          class="max-w-[80%] gradient-text text-text-light font-primary font-medium text-left self-start capitalize"
+        />
+      )
+    }
+
+    {
+      price && (
+        <data
+          data-aos="fade-up-sm"
+          data-aos-delay="200"
+          class="h4 text-text-light mt-2 mb-4 block"
+          value={price}
+        >
+          {price}
+        </data>
+      )
+    }
+
+    {
+      roomDetails && (
+        <ul class="flex gap-4 flex-wrap border-t border-body pt-6 pb-16 max-w-fit">
+          {roomDetails.size && (
+            <li
+              data-aos="fade-right-sm"
+              data-aos-delay="150"
+              class="flex gap-2 items-center bg-body px-3 py-1 border-text-dark border"
+            >
+              <SlSizeFullscreen size={16} />
+              <p
+                class="text-text-dark"
+                set:html={markdownify(roomDetails.size)}
+              />
+            </li>
+          )}
+
+          {roomDetails.occupancy && (
+            <li
+              data-aos="fade-right-sm"
+              data-aos-delay="170"
+              class="flex gap-2 items-center bg-body px-3 py-1 border-text-dark border"
+            >
+              <IoMdPersonAdd size={16} />
+              <p
+                class="text-text-dark"
+                set:html={markdownify(roomDetails.occupancy)}
+              />
+            </li>
+          )}
+
+          {roomDetails.bed_type && (
+            <li data-aos="fade-right-sm"
+              data-aos-delay="190" class="flex gap-2 items-center bg-body px-3 py-1 border-text-dark border">
+              <IoBedOutline size={16} />
+              <p
+                class="text-text-dark"
+                set:html={markdownify(roomDetails.bed_type)}
+              />
+            </li>
+          )}
+
+          {roomDetails.bathroom && (
+            <li data-aos="fade-right-sm"
+              data-aos-delay="210" class="flex gap-2 items-center bg-body px-3 py-1 border-text-dark border">
+              <PiBathtub size={16} />
+              <p
+                class="text-text-dark"
+                set:html={markdownify(roomDetails.bathroom)}
+              />
+            </li>
+          )}
+        </ul>
+      )
+    }
+  </div>
+
+  {
+    title && (
+      <div class="flex flex-col md:flex-row max-md:items-center lg:gap-10 mt-auto overflow-hidden">
+        <h1
+          data-aos="fade-up-sm"
+          data-aos-delay="200"
+          set:html={markdownify(title)}
+          class="max-md:order-1 lg:max-w-[80%] mx-auto gradient-text pb-10 lg:pb-12 sm:text-[100px] lg:text-[150px] xl:text-[190px] leading-12 sm:leading-22 lg:leading-32 text-text-light max-lg:text-center font-primary font-medium text-center self-end capitalize"
+        />
+      </div>
+    )
+  }
+</section>

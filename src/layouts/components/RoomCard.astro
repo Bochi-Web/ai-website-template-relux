@@ -1,0 +1,88 @@
+---
+import { markdownify } from "@/lib/utils/textConverter";
+import type { CollectionEntry } from "astro:content";
+import Button from "./Button.astro";
+import ImageMod from "./ImageMod.astro";
+
+type Props = {
+  room: CollectionEntry<"roomSinglePage">;
+};
+
+const { room } = Astro.props;
+const {
+  title,
+  description,
+  price,
+  image,
+  room_details,
+  room_amenities_hightlight,
+} = room.data;
+---
+
+<figure class="relative">
+  {
+    image && (
+      <ImageMod
+        src={image}
+        width={1688}
+        height={856}
+        alt={"Image of - " + title}
+        format="webp"
+        class="w-full h-[600px] md:h-[850px] object-cover border border-primary p-3 md:p-7"
+      />
+    )
+  }
+
+  <figcaption
+    data-aos="zoom-in-sm"
+    data-aos-delay="150"
+    class="absolute bottom-7 md:bottom-14 left-1/2 max-lg:-translate-x-1/2 lg:left-14 bg-body p-8 lg:p-10 w-[85%] md:max-w-[597px] max-h-auto"
+  >
+    <h2 class="h4 mb-4" set:html={markdownify(title)} />
+    <p class="mb-6" set:html={markdownify(description)} />
+
+    <data class="h6 text-text-dark" value={price}>
+      {price}
+    </data>
+
+    <ul
+      class="my-6 py-4 border-t border-b border-border hidden md:flex gap-10 lg:gap-16 flex-wrap"
+    >
+      <li>
+        <h6 class="text-dark">Size</h6>
+        <p class="text-sm" set:html={markdownify(room_details.size)} />
+      </li>
+      <li>
+        <h6 class="text-dark">Guests</h6>
+        <p class="text-sm" set:html={markdownify(room_details.occupancy)} />
+      </li>
+      <li>
+        <h6 class="text-dark">Bed</h6>
+        <p class="text-sm" set:html={markdownify(room_details.bed_type)} />
+      </li>
+    </ul>
+
+    <div class="hidden md:flex flex-col gap-4">
+      <ul class="flex gap-4 flex-wrap">
+        {
+          room_amenities_hightlight?.map((amenity) => (
+            <li
+              class="flex items-center gap-2 bg-primary/10 uppercase px-4 py-1 text-xs"
+              set:html={markdownify(amenity)}
+            />
+          ))
+        }
+      </ul>
+    </div>
+
+    <Button
+      data={{
+        enable: true,
+        label: "Get started",
+        link: `/rooms/${room.id}`,
+      }}
+      variant="outline"
+      className="mt-8 w-full text-center rounded-none py-3"
+    />
+  </figcaption>
+</figure>

@@ -1,0 +1,58 @@
+---
+import Button from "@/components/Button.astro";
+import ImageMod from "@/components/ImageMod.astro";
+import { getListPage } from "@/lib/contentParser.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+
+const sectionData = await getListPage(
+  "callToActionSecondary",
+  "call-to-action-secondary",
+);
+if (!sectionData.data.enable) return null;
+
+const { title, image_primary, image_secondary, description, button } =
+  sectionData.data;
+---
+
+<section class="section pt-0 bg-light">
+  <div class="container">
+    <div
+      class="flex flex-col lg:flex-row max-lg:items-center lg:justify-between gap-10"
+    >
+      <figure
+        class="w-[95%] lg:w-1/2 object-cover"
+        data-aos="fade-right-sm"
+        data-aos-delay="200"
+      >
+        <ImageMod
+          class="h-full"
+          width={900}
+          height={900}
+          src={image_secondary}
+          alt=""
+          aria-hidden="true"
+        />
+      </figure>
+
+      <div
+        data-aos="fade-left-sm"
+        data-aos-delay="200"
+        class="border border-primary w-[95%] lg:w-1/2 p-10 text-center"
+      >
+        <h3 class="h2" set:html={markdownify(title)} />
+
+        <ImageMod
+          width={900}
+          height={900}
+          src={image_primary}
+          alt={`Image - ${title}`}
+          class="my-10 w-full object-cover"
+        />
+
+        <p class="h6 mb-12" set:html={markdownify(description)} />
+
+        <Button variant="outline" data={button} />
+      </div>
+    </div>
+  </div>
+</section>

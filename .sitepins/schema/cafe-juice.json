@@ -1,0 +1,166 @@
+{
+  "file": "src/content/cafe-juice/-index.md",
+  "name": "cafe-juice",
+  "fileType": "md",
+  "fmType": "yaml",
+  "template": [
+    {
+      "name": "title",
+      "label": "Title",
+      "type": "string",
+      "value": "",
+      "defaultValue": ""
+    },
+    {
+      "name": "subtitle",
+      "label": "Subtitle",
+      "type": "string",
+      "value": "",
+      "defaultValue": ""
+    },
+    {
+      "name": "meta_title",
+      "label": "Meta Title",
+      "type": "string",
+      "value": "",
+      "defaultValue": ""
+    },
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "string",
+      "value": "",
+      "defaultValue": ""
+    },
+    {
+      "name": "image",
+      "label": "Image",
+      "type": "media",
+      "value": "",
+      "defaultValue": ""
+    },
+    {
+      "name": "draft",
+      "label": "Draft",
+      "type": "boolean",
+      "value": false,
+      "defaultValue": false
+    },
+    {
+      "name": "gallery_section",
+      "label": "Gallery Section",
+      "type": "object",
+      "defaultValue": "",
+      "fields": [
+        {
+          "name": "enable",
+          "label": "Enable",
+          "type": "boolean",
+          "value": false,
+          "defaultValue": false
+        },
+        {
+          "name": "title",
+          "label": "Title",
+          "type": "string",
+          "value": "",
+          "defaultValue": ""
+        },
+        {
+          "name": "description",
+          "label": "Description",
+          "type": "object",
+          "defaultValue": "",
+          "fields": [
+            {
+              "name": "title",
+              "label": "Title",
+              "type": "string",
+              "value": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "list_texts",
+              "label": "List Texts",
+              "type": "Array",
+              "value": [],
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "images",
+          "label": "Images",
+          "type": "gallery",
+          "defaultValue": ""
+        }
+      ]
+    },
+    {
+      "name": "menu_section",
+      "label": "Menu Section",
+      "type": "object",
+      "defaultValue": "",
+      "fields": [
+        {
+          "name": "enable",
+          "label": "Enable",
+          "type": "boolean",
+          "value": false,
+          "defaultValue": false
+        },
+        {
+          "name": "title",
+          "label": "Title",
+          "type": "string",
+          "value": "",
+          "defaultValue": ""
+        },
+        {
+          "name": "subtitle",
+          "label": "Subtitle",
+          "type": "string",
+          "value": "",
+          "defaultValue": ""
+        },
+        {
+          "name": "image",
+          "label": "Image",
+          "type": "media",
+          "value": "",
+          "defaultValue": ""
+        },
+        {
+          "name": "items",
+          "label": "Items",
+          "type": "Array",
+          "value": [],
+          "defaultValue": "",
+          "fields": [
+            {
+              "name": "name",
+              "label": "Name",
+              "type": "string",
+              "value": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "description",
+              "label": "Description",
+              "type": "string",
+              "value": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "price",
+              "label": "Price",
+              "type": "string",
+              "value": "",
+              "defaultValue": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

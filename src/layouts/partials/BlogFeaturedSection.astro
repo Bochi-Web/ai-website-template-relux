@@ -1,0 +1,92 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+
+const blogs = await getSinglePage("blogSinglePage");
+const featuredBlogs = blogs.filter((item) => item.data.featured);
+
+if (!featuredBlogs.length) return null;
+---
+
+<section class="section bg-secondary">
+  <div class="container">
+    <h2
+      data-aos="fade-up-sm"
+      data-aos-delay="200"
+      class="text-center text-text-light mb-10"
+      set:html={markdownify("Blog & events")}
+    />
+
+    <div class="overflow-x-auto">
+      <table class="w-full table-fixed border border-primary">
+        <tbody>
+          {
+            featuredBlogs.map((blog, index) => (
+              <tr
+                class="border-b border-primary last:border-b-0 blog-row group"
+                data-index={index}
+              >
+                <td class="p-4 text-text-light align-top lg:w-1/2 border-r border-primary relative">
+                  <a
+                    class="flex gap-8 after:absolute after:inset-0 h5 font-secondary"
+                    href={`/blog/${blog.id}`}
+                  >
+                    {(index + 1).toString().padStart(2, "0")}
+                    <h3
+                      class="text-h4 text-balance blog-title"
+                      set:html={markdownify(blog.data.title)}
+                    />
+                  </a>
+                </td>
+                {index === 0 && (
+                  <td
+                    class="p-4 max-lg:hidden lg:w-1/2"
+                    rowspan={featuredBlogs.length}
+                  >
+                    <div class="relative w-full aspect-square">
+                      {featuredBlogs.map((imageItem, imageIndex) => (
+                        <ImageMod
+                          src={imageItem.data.image!}
+                          alt={`${imageItem.data.title} image`}
+                          class={`blog-image absolute inset-0 w-full h-full object-cover ${
+                            imageIndex === 0 ? "is-active" : ""
+                          }`}
+                          width={900}
+                          height={900}
+                        />
+                      ))}
+                    </div>
+                  </td>
+                )}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+  const initBlogHover = () => {
+    const rows = document.querySelectorAll(".blog-row");
+    const images = document.querySelectorAll(".blog-image");
+    if (!rows.length || !images.length) return;
+    const setActive = (index: number) => {
+      images.forEach((img, i) => {
+        img.classList.toggle("is-active", i === index);
+      });
+    };
+    rows.forEach((row) => {
+      row.addEventListener("mouseenter", () => {
+        const index = Number((row as HTMLElement).dataset.index || 0);
+        setActive(index);
+      });
+      row.addEventListener("mouseleave", () => {
+        setActive(0);
+      });
+    });
+  };
+  document.addEventListener("astro:page-load", initBlogHover);
+</script>

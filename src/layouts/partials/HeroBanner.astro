@@ -1,0 +1,56 @@
+---
+import Button from "@/components/Button.astro";
+import ImageMod from "@/components/ImageMod.astro";
+import { getListPage } from "@/lib/contentParser.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+
+const pageIndex = await getListPage("homepage", "-index");
+const { banner } = pageIndex.data;
+---
+
+<section class="hero-banner pt-24 lg:min-h-screen! flex flex-col">
+  <p
+    data-aos="fade-up-sm"
+    data-aos-delay="150"
+    set:html={markdownify(banner.subtitle)}
+    class="gradient-text h1 text-text-light text-center uppercase font-secondary font-normal"
+  />
+
+  <div
+    class="flex flex-col md:flex-row max-md:items-center lg:gap-10 mt-auto overflow-hidden"
+  >
+    <aside
+      data-aos="fade-right-sm"
+      data-aos-delay="150"
+      class="max-md:order-3 md:border-t md:border-r border-primary rounded-tr-[80px] px-4 lg:px-10 2xl:px-20 py-10 2xl:py-28 md:w-[35%] lg:w-[25%] flex justify-center items-center"
+    >
+      <ImageMod
+        src={"/images/homepage/badge.svg"}
+        height={138}
+        width={158}
+        alt="Hero Banner Image"
+        format="webp"
+        class="m-auto"
+      />
+    </aside>
+
+    <h1
+      data-aos="fade-up-sm"
+      data-aos-delay="200"
+      set:html={markdownify(banner.title)}
+      class="max-md:order-1 lg:max-w-[50%] mx-auto gradient-text pb-10 md:pb-12 sm:text-[100px] lg:text-[150px] xl:text-[190px] max-md:leading-22 lg:leading-32 text-text-light max-lg:text-center font-primary font-medium text-center self-end capitalize"
+    />
+
+    <aside
+      data-aos="fade-left-sm"
+      data-aos-delay="150"
+      class="max-md:order-2 md:border-t md:border-l border-primary rounded-tl-[80px] px-4 xl:px-10 2xl:px-20 py-10 2xl:py-28 flex flex-col items-center md:items-end justify-center gap-6 md:w-[35%] lg:w-[25%]"
+    >
+      <p
+        class="text-center md:text-right text-text-light md:h6 leading-snug uppercase"
+        set:html={markdownify(banner.content)}
+      />
+      <Button data={banner.button} />
+    </aside>
+  </div>
+</section>

@@ -1,0 +1,27 @@
+---
+import Arrow from "./shapes/Arrow";
+
+const { data } = Astro.props;
+const { enable, label, link } = data;
+if (!enable) return null;
+
+const { variant = "primary", className } = Astro.props;
+---
+
+<a
+  class={`btn btn-${variant} group overflow-hidden inline-block ${className}`}
+  href={link}
+  target={link.startsWith("http") ? "_blank" : "_self"}
+>
+  <span class="inline-flex items-center overflow-hidden">
+    <span
+      class="group-hover:translate-x-6 whitespace-nowrap transition-transform duration-300 ease-out"
+    >
+      <Arrow
+        className="absolute -left-6 top-1 opacity-0 transition-all duration-300 ease-out group-hover:opacity-100"
+      />
+      {label}
+      <Arrow className="ml-1" />
+    </span>
+  </span>
+</a>

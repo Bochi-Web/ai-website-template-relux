@@ -1,0 +1,61 @@
+---
+import Arrow from "@/components/shapes/Arrow";
+import Separator from "@/components/shapes/Separator";
+import config from "@/config/config.json";
+import { getListPage } from "@/lib/contentParser.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+
+const sectionData = await getListPage("newsletterSocial", "newsletter-social");
+if (!sectionData.data.enable) return null;
+
+const { title, description } = sectionData.data;
+---
+
+<section class="section pb-4 bg-light">
+  <div class="container text-center">
+    <Separator />
+    <h2
+      data-aos="fade-up-sm"
+      data-aos-delay="200"
+      class="mt-22 mb-2 mx-auto"
+      set:html={markdownify(title)}
+    />
+
+    <p
+      data-aos="fade-up-sm"
+      data-aos-delay="200"
+      class="h6 opacity-80 uppercase"
+      set:html={markdownify(description)}
+    />
+
+    <form
+      data-aos="fade-up-sm"
+      data-aos-delay="200"
+      class="mt-10 mb-16"
+      action={config.subscription_in_footer.mailchimp_form_action}
+      target="_blank"
+      method="post"
+    >
+      <div
+        class="flex justify-between bg-light px-3 py-2 border border-dark mb-5 lg:w-[70%] xl:w-[50%] mx-auto"
+      >
+        <input
+          type="email"
+          placeholder="Enter your email"
+          class="form-input w-full border-transparent! bg-transparent! py-2! pl-2! placeholder:opacity-100! placeholder:font-normal"
+          required
+          name={config.subscription_in_footer.mailchimp_form_name}
+        />
+        <button
+          title="Subscribe"
+          class="transition hover:opacity-80 pr-2"
+          type="submit"
+        >
+          <Arrow className="w-10 h-6 text-primary/80" />
+        </button>
+      </div>
+    </form>
+
+    <Separator />
+  </div>
+</section>

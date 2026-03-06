@@ -1,0 +1,145 @@
+{
+  "file": "src/content/about/-index.md",
+  "name": "about",
+  "fileType": "md",
+  "fmType": "yaml",
+  "template": [
+    {
+      "name": "title",
+      "label": "Title",
+      "type": "string",
+      "value": "",
+      "defaultValue": ""
+    },
+    {
+      "name": "subtitle",
+      "label": "Subtitle",
+      "type": "string",
+      "value": "",
+      "defaultValue": ""
+    },
+    {
+      "name": "meta_title",
+      "label": "Meta Title",
+      "type": "string",
+      "value": "",
+      "defaultValue": ""
+    },
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "string",
+      "value": "",
+      "defaultValue": ""
+    },
+    {
+      "name": "image",
+      "label": "Image",
+      "type": "media",
+      "value": "",
+      "defaultValue": ""
+    },
+    {
+      "name": "draft",
+      "label": "Draft",
+      "type": "boolean",
+      "value": false,
+      "defaultValue": false
+    },
+    {
+      "name": "about_section",
+      "label": "About Section",
+      "type": "object",
+      "defaultValue": "",
+      "fields": [
+        {
+          "name": "enable",
+          "label": "Enable",
+          "type": "boolean",
+          "value": false,
+          "defaultValue": false
+        },
+        {
+          "name": "title",
+          "label": "Title",
+          "type": "string",
+          "value": "",
+          "defaultValue": ""
+        },
+        {
+          "name": "description",
+          "label": "Description",
+          "type": "string",
+          "value": "",
+          "defaultValue": ""
+        },
+        {
+          "name": "image",
+          "label": "Image",
+          "type": "media",
+          "value": "",
+          "defaultValue": ""
+        }
+      ]
+    },
+    {
+      "name": "service_section",
+      "label": "Service Section",
+      "type": "object",
+      "defaultValue": "",
+      "fields": [
+        {
+          "name": "enable",
+          "label": "Enable",
+          "type": "boolean",
+          "value": false,
+          "defaultValue": false
+        },
+        {
+          "name": "title",
+          "label": "Title",
+          "type": "string",
+          "value": "",
+          "defaultValue": ""
+        },
+        {
+          "name": "operating_hours",
+          "label": "Operating Hours",
+          "type": "string",
+          "value": "",
+          "defaultValue": ""
+        },
+        {
+          "name": "image",
+          "label": "Image",
+          "type": "media",
+          "value": "",
+          "defaultValue": ""
+        },
+        {
+          "name": "services",
+          "label": "Services",
+          "type": "Array",
+          "value": [],
+          "defaultValue": "",
+          "fields": [
+            {
+              "name": "label",
+              "label": "Label",
+              "type": "string",
+              "value": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "icon",
+              "label": "Icon",
+              "type": "string",
+              "value": "",
+              "defaultValue": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
