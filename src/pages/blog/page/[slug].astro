@@ -1,0 +1,57 @@
+---
+import BlogCard from "@/components/BlogCard.astro";
+import Pagination from "@/components/Pagination.astro";
+import config from "@/config/config.json";
+import Base from "@/layouts/Base.astro";
+import { getListPage, getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+import PageHeader from "@/partials/PageHeader.astro";
+
+const { slug } = Astro.params;
+const postIndex = await getListPage("blogListPage", "-index");
+
+if (postIndex.data.draft) return Astro.redirect("/404");
+
+const posts = await getSinglePage("blogSinglePage");
+const sortedPosts = sortByDate(posts);
+const totalPages = Math.ceil(posts.length / config.settings.pagination);
+const currentPage = slug && !isNaN(Number(slug)) ? Number(slug) : 1;
+const indexOfLastPost = currentPage * config.settings.pagination;
+const indexOfFirstPost = indexOfLastPost - config.settings.pagination;
+const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
+
+export async function getStaticPaths() {
+  const posts = await getSinglePage("blogSinglePage");
+  const totalPages = Math.ceil(posts.length / config.settings.pagination);
+  const paths = [];
+
+  for (let i = 1; i < totalPages; i++) {
+    paths.push({
+      params: {
+        slug: (i + 1).toString(),
+      },
+    });
+  }
+  return paths;
+}
+---
+
+<Base {...postIndex.data}>
+  <PageHeader
+    title={postIndex?.data.title}
+    subtitle={postIndex?.data.subtitle}
+    backgroundImage={postIndex?.data.image}
+  />
+  <section class="section bg-light">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 justify-center mb-14">
+        {currentPosts.map((post) => <BlogCard data={post} />)}
+      </div>
+      <Pagination
+        section={"blog"}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      />
+    </div>
+  </section>
+</Base>

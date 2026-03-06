@@ -1,0 +1,146 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import RoomCard from "@/components/RoomCard.astro";
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import similarItems from "@/lib/utils/similarItems";
+import { markdownify } from "@/lib/utils/textConverter";
+import CallToAction from "@/partials/CallToAction.astro";
+import GallerySlider from "@/partials/GallerySlider.astro";
+import NewsletterSocial from "@/partials/NewsletterSocial.astro";
+import PageHeader from "@/partials/PageHeader.astro";
+import { IoMdCheckboxOutline } from "react-icons/io";
+
+export async function getStaticPaths() {
+  const rooms = await getSinglePage("roomSinglePage");
+
+  const paths = rooms.map((room) => ({
+    params: {
+      single: room.id,
+    },
+    props: { room },
+  }));
+  return paths;
+}
+
+const { room } = Astro.props;
+const {
+  title,
+  image,
+  price,
+  room_details,
+  room_overview,
+  room_amenities,
+  gallery,
+} = room.data;
+
+const rooms = await getSinglePage("roomSinglePage");
+const similarrooms = similarItems(room, rooms);
+
+const galleryOrdered = (() => {
+  if (!gallery || gallery.length === 0) return [];
+  const head = gallery.slice(0, 3);
+  const tail = gallery.slice(3);
+  const reorderedTail = [];
+
+  for (let i = 0; i < tail.length; i += 3) {
+    const chunk = tail.slice(i, i + 3).reverse();
+    reorderedTail.push(...chunk);
+  }
+
+  return [...head, ...reorderedTail];
+})();
+---
+
+<Base {...room.data}>
+  <PageHeader
+    roomTitle={title}
+    backgroundImage={image}
+    price={price}
+    roomDetails={room_details}
+  />
+  <section class="section bg-light">
+    <div class="container">
+      <article class="lg:flex border-b border-text-dark">
+        <div class="lg:border-r border-text-dark lg:pr-14 pb-14 lg:w-1/2">
+          <h2 data-aos="fade-up-sm" data-aos-delay="150" class="mb-6">
+            Room Overview
+          </h2>
+          <p
+            data-aos="fade-up-sm"
+            data-aos-delay="200"
+            class="wrap-break-word text-balance"
+            set:html={markdownify(room_overview)}
+          />
+        </div>
+
+        <div class="lg:pl-14 pb-14 lg:w-1/2">
+          <h2 data-aos="fade-up-sm" data-aos-delay="150" class="mb-6">
+            Room Features
+          </h2>
+          <ul data-aos="fade-up-sm" data-aos-delay="200" class="space-y-2">
+            {
+              room_amenities.map((amenity) => (
+                <li class="flex items-start gap-2">
+                  <IoMdCheckboxOutline className="shrink-0 text-sm mt-1.5" />
+                  <span set:html={markdownify(amenity)} />
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </article>
+
+      <div
+        class="grid grid-cols-1 md:grid-cols-[35%_65%] md:auto-rows-[1fr] md:items-stretch gap-6 mt-10 overflow-hidden"
+      >
+        {
+          galleryOrdered.map((image, index) => {
+            const groupIndex = Math.floor(index / 3);
+            const localIndex = index % 3;
+            const rowStart = groupIndex * 2 + 1;
+            const rowSpan = localIndex === 2 ? 2 : 1;
+            const colClass =
+              localIndex === 2
+                ? "md:col-start-2 md:self-start"
+                : "md:col-start-1";
+
+            return (
+              <figure
+                data-aos="zoom-out-sm"
+                data-aos-delay={150 + index * 50}
+                class={`${colClass} md:[grid-row:var(--row-start)/span_var(--row-span)] h-full`}
+                style={`--row-start: ${rowStart + (localIndex === 1 ? 1 : 0)}; --row-span: ${rowSpan};`}
+              >
+                <ImageMod
+                  src={image}
+                  width={1688}
+                  height={900}
+                  alt={""}
+                  format="webp"
+                  class="w-full h-full object-cover"
+                />
+              </figure>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Related rooms -->
+  <section class="section pt-0 bg-light">
+    <div class="container">
+      <h2 data-aos="fade-up-sm" data-aos-delay="200" class="mb-12 text-center">
+        Similar rooms
+      </h2>
+      <div class="grid gap-10">
+        {similarrooms.map((room) => <RoomCard room={room} />)}
+      </div>
+    </div>
+  </section>
+
+  <CallToAction />
+  <NewsletterSocial />
+  <GallerySlider />
+</Base>

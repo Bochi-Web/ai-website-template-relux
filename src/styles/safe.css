@@ -1,0 +1,120 @@
+/* navbar toggler */
+input#nav-toggle:checked + label #show-button {
+  @apply hidden;
+}
+
+input#nav-toggle:checked + label #hide-button {
+  @apply block;
+}
+
+input#nav-toggle:checked ~ #nav-menu {
+  @apply max-lg:block;
+}
+
+/* swiper pagination */
+.swiper-pagination-bullet {
+  @apply size-2.5! bg-light! opacity-100!;
+}
+
+.swiper-pagination-bullet-active {
+  @apply size-4! bg-primary!;
+}
+
+/* blog table hover image */
+.blog-image {
+  @apply opacity-0 blur-md transition-all duration-500;
+}
+
+.blog-image.is-active {
+  @apply opacity-100 blur-none;
+}
+
+/* testimonial slide overlay */
+.testimonial-slider .testimonial-overlay {
+  @apply absolute top-1/2 -translate-y-1/2 left-1/2 md:left-0 max-md:-translate-1/2 w-[80%] xl:w-[50%] bg-body p-6 shadow-lg blur-lg;
+}
+
+.testimonial-slider .swiper-slide .testimonial-overlay {
+  @apply opacity-0 pointer-events-none transition-all duration-500 ease-in-out;
+}
+
+.testimonial-slider .swiper-slide-active .testimonial-overlay {
+  @apply text-center opacity-100 pointer-events-auto blur-none;
+}
+
+/* testimonial active image width */
+.testimonial-slider .testimonial-image {
+  @apply w-full;
+}
+
+.testimonial-slider .swiper-slide-active .testimonial-image {
+  @apply w-full xl:w-[75%] ml-auto;
+}
+
+/* room slider nav disabled state */
+.room-swiper-button-prev.swiper-button-disabled,
+.room-swiper-button-next.swiper-button-disabled {
+  @apply bg-transparent border-primary pointer-events-none;
+
+  svg {
+    @apply opacity-40;
+  }
+}
+
+.swiper-button-next::after,
+.swiper-rtl .swiper-button-prev::after {
+  @apply bg-primary rounded-full p-5 content-[""] bg-no-repeat bg-center -rotate-180 mr-20;
+  color: var(--color-text-light);
+  background-image: url("data:image/svg+xml,%3Csvg width='14' height='24' viewBox='0 0 14 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.8281 0C12.8281 7.85455 4.94241 11.2727 0.999554 12C4.94241 12.7273 12.8281 16.1455 12.8281 24' stroke='currentColor' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 0.5em;
+}
+
+.swiper-button-prev::after,
+.swiper-rtl .swiper-button-prev::after {
+  @apply bg-primary rounded-full p-5 content-[""]! bg-no-repeat bg-center ml-20;
+  color: var(--color-text-light);
+  background-image: url("data:image/svg+xml,%3Csvg width='14' height='24' viewBox='0 0 14 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.8281 0C12.8281 7.85455 4.94241 11.2727 0.999554 12C4.94241 12.7273 12.8281 16.1455 12.8281 24' stroke='currentColor' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 0.5em;
+}
+
+/* image slider sizing */
+.image-slider .swiper-slide {
+  width: 60% !important;
+  transition: width 300ms ease;
+}
+
+.image-slider .swiper-slide-active {
+  width: 70% !important;
+}
+
+/* gallery circle */
+.gallery-circle-wrapper {
+  @apply relative mx-auto mt-10 flex items-center justify-center;
+  width: min(90vw, 1400px);
+  height: min(90vw, 1400px);
+}
+
+.gallery-circle {
+  @apply relative rounded-full border border-primary;
+  width: 75%;
+  height: 75%;
+  transform: rotate(var(--rotation, 0deg));
+  transition: transform 300ms ease-out;
+}
+
+.gallery-card {
+  @apply absolute bg-body border border-border flex items-center justify-center text-text-dark w-[228px] h-[280px] md:w-[292px] md:h-[360px] lg:w-[424px] lg:h-[520px] xl:w-[520px] xl:h-[640px];
+  transform: translate(-50%, -50%) rotate(calc(-1 * var(--rotation, 0deg)));
+}
+
+.gallery-card-1 {
+  @apply top-[60%] left-full;
+}
+
+.gallery-card-2 {
+  @apply top-0 left-1/2;
+}
+
+.gallery-card-3 {
+    @apply top-[60%] left-0;
+}

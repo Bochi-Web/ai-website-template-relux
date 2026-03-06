@@ -1,0 +1,64 @@
+---
+import BlogCard from "@/components/BlogCard.astro";
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import similarItems from "@/lib/utils/similarItems";
+import GallerySlider from "@/partials/GallerySlider.astro";
+import PageHeader from "@/partials/PageHeader.astro";
+import { render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getSinglePage("blogSinglePage");
+
+  const paths = posts.map((post) => ({
+    params: {
+      single: post.id,
+    },
+    props: { post },
+  }));
+  return paths;
+}
+
+const { post } = Astro.props;
+const { title, date, image, categories } = post.data;
+const { Content } = await render(post);
+
+const posts = await getSinglePage("blogSinglePage");
+const similarPosts = similarItems(post, posts);
+---
+
+<Base {...post.data}>
+  <PageHeader
+    blogTitle={title}
+    categories={categories}
+    backgroundImage={image}
+    date={date}
+  />
+  <section class="section pt-10 bg-light">
+    <div class="container">
+      <article
+        data-aos="fade-up-sm"
+        data-aos-delay="200"
+        class="max-w-[90%] lg:max-w-[880px] mx-auto"
+      >
+        <div class="content mb-10">
+          <Content />
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Related posts -->
+  <section class="section">
+    <div class="container">
+      <h2 data-aos="fade-up-sm" data-aos-delay="200" class="mb-12 text-center">
+        Related Posts
+      </h2>
+      <div class="grid md:grid-cols-2 gap-5 justify-center">
+        {similarPosts.map((post) => <BlogCard data={post} />)}
+      </div>
+    </div>
+  </section>
+
+  <GallerySlider />
+</Base>

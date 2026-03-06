@@ -1,0 +1,23 @@
+@utility gradient-text {
+  background: linear-gradient(
+    to right,
+    var(--color-text-light) 5%,
+    var(--color-text-light) 15%,
+    var(--color-primary) 60%
+  );
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+/* form style */
+@utility form-input {
+  @apply w-full border-dark bg-light px-6 py-4 text-text-dark placeholder:text-text-dark/30 focus:border-primary focus:ring-transparent;
+}
+
+@utility form-label {
+  @apply mb-4 block font-secondary text-xl font-normal text-text-dark;
+}
