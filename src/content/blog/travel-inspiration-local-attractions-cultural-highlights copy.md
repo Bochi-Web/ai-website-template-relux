@@ -13,7 +13,7 @@ featured: false
 
 Enim egestas quis ullamcorper cursus nullam nisi, non, nulla. Vitae cursus convallis proin porta habitasse diam quis convallis. Augue molestie tincidunt sed in lacus, sodales etiam. Aliquam cursus amet pharetra sit ipsum magna. Facilisis rhoncus eget tempor, duis in. Auctor pulvinar enim egestas fermentum.
 
-Vel morbi porta eleifend placerat ut porttitor in in pellentesque. Accumsan sit cum aenean senectus tristique nisl quis eget. Tristique mi molestie justo lobortis laoreet. Quam ut adipiscing netus eget.
+Vel morbi porta eleifend placerat ut porttitor in in pellentesque. Accumsan sit cum aenean senectus tristique nisl quis eget. Tristique mi molestie justo lobortis laoreet. Quam ut adipiscing netus eget&#x20;
 
 ## Rooms & Suites: A Sanctuary of Elegance
 

@@ -1,5 +1,6 @@
 import { glob } from "astro/loaders";
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
 
 const commonFields = {
   title: z.string(),
@@ -130,7 +131,7 @@ export const blogSinglePage = defineCollection({
   }),
   schema: z.object({
     ...commonFields,
-    date: z.union([z.string(), z.date()]),
+    date: z.coerce.date(),
     categories: z.array(z.string()),
     featured: z.boolean(),
   }),

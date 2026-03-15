@@ -2,18 +2,18 @@
 title: "Wellness & Spa – relaxation, treatments, holistic therapies"
 meta_title: ""
 description: "this is meta description"
-date: 2025-04-04T05:00:00Z
+date: 2025-04-04T05:00:00.000Z
 image: "/images/blog/6.png"
-categories: ["relax"]
+categories:
+  - relax
 draft: false
 featured: true
 ---
-
 ![luxury room](/images/blog/details.png)
 
 Enim egestas quis ullamcorper cursus nullam nisi, non, nulla. Vitae cursus convallis proin porta habitasse diam quis convallis. Augue molestie tincidunt sed in lacus, sodales etiam. Aliquam cursus amet pharetra sit ipsum magna. Facilisis rhoncus eget tempor, duis in. Auctor pulvinar enim egestas fermentum.
 
-Vel morbi porta eleifend placerat ut porttitor in in pellentesque. Accumsan sit cum aenean senectus tristique nisl quis eget. Tristique mi molestie justo lobortis laoreet. Quam urna ut adipiscing netus eget.
+Vel morbi porta eleifend placerat ut porttitor in in pellentesque. Accumsan sit cum aenean senectus tristique nisl quis eget. Tristique mi molestie justo lobortis laoreet. Quam urna ut adipiscing netus.
 
 ## Rooms & Suites: A Sanctuary of Elegance
 
